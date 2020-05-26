@@ -3,11 +3,11 @@
   <img src="sc/banner-1544x500.png?raw=true">
 </p>
 
-# Codehaveli Bitly URL Shortener
+# Codehaveli Bitly URL Shortener 
 
 ### Description
 
-**Codehaveli Bitly URL Shortener** allow you to connect your WordPress Website to the https://bitly.com/ account via access code.
+[Codehaveli Bitly URL Shortener](https://wordpress.org/plugins/codehaveli-bitly-url-shortener/) allow you to connect your WordPress Website to the https://bitly.com/ account via access code.
 
 This Plugin enables Bitly User to generate short link automatically from Wordpress when they publish new post. 
 
