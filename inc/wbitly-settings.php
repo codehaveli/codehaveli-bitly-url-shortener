@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-05-26 17:17:09
+ * @Last Modified time: 2020-06-29 19:32:16
  */
 
 
@@ -279,6 +279,18 @@ class WbitlyURLSettings {
 			'wbitly-url-admin', // page
 			'wbitly_url_setting_section' // section
 		);
+
+
+		add_settings_field(
+			'wbitly_socal_share', // id
+			'Enable Social Share Button', // title
+			array( $this, 'add_wbitly_social_share_button' ), // callback
+			'wbitly-url-admin', // page
+			'wbitly_url_setting_section' // section
+		);
+
+
+
 	}
 
 	/**
@@ -301,6 +313,11 @@ class WbitlyURLSettings {
 
 		if ( isset( $input['bitly_domain'] ) ) {
 			$sanitary_values['bitly_domain'] = sanitize_text_field( $input['bitly_domain'] );
+		}
+
+
+		if ( isset( $input['wbitly_socal_share'] ) ) {
+			$sanitary_values['wbitly_socal_share'] = sanitize_text_field( $input['wbitly_socal_share'] );
 		}
 
 		return $sanitary_values;
@@ -337,6 +354,17 @@ class WbitlyURLSettings {
 		echo '<p><small>Leave blank if you are in Free Plan</small></p>';
 	}
 
+	public function add_wbitly_social_share_button() {
+
+		$wbitly_social_share = '';
+				
+	    if($this->bitly_url_options['wbitly_socal_share']){
+	    	$wbitly_social_share =  $this->bitly_url_options['wbitly_socal_share'] == "enable" ? "checked" : '';   	
+	    }
+
+		printf('<label><input name="wbitly_url_option_name[wbitly_socal_share]"  id="wbitly_socal_share" type="checkbox" value="enable"  %s> Enable </label>', $wbitly_social_share);
+		echo '<p><small>If you enable this you can share the link from your post list</small></p>';
+	}
 
 
 	/**
@@ -381,13 +409,23 @@ class WbitlyURLSettings {
 	}
 
 
+	public function get_wbitly_socal_share_status(){
+
+		$bitly_url_options_from_db = get_option( 'wbitly_url_option_name' ); 
+		$wbitly_socal_share        = isset($bitly_url_options_from_db['wbitly_socal_share']) ? $bitly_url_options_from_db['wbitly_socal_share'] : '';
+		return $wbitly_socal_share === "enable" ? true : false;
+	}
+
+
+
+
 
 
 
 
 }
 if ( is_admin() )
-	$bitly_url = new WbitlyURLSettings();
+	$wbitly_settings = new WbitlyURLSettings();
 
 
 

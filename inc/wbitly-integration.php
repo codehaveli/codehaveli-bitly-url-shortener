@@ -6,69 +6,87 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-05-23 10:00:26
+ * @Last Modified time: 2020-06-29 20:03:48
  */
 
 
 /**
+ * Generate short URL from permalink
+ *
+ * @param      <type>  $permalink  The permalink
+ *
+ * @return     <type>  ( description_of_the_return_value )
+ */
+function wbitly_generate_shorten_url($permalink){
+
+   if ( ! class_exists( 'WbitlyURLSettings' ) ) {
+      return;
+    }
+     global $wbitly_settings;
+
+     $permalink      =  apply_filters( 'wbitly_url_before_process', $permalink );
+     $access_token   =  $wbitly_settings->get_wbitly_access_token();
+     $group_guid     =  $wbitly_settings->get_wbitly_guid();
+     $shorten_domain =  $wbitly_settings->get_wbitly_domain();
+
+
+
+    if(!$shorten_domain){
+       $payload = array(
+        "group_guid" =>"".$group_guid."",
+        "long_url"   =>"".$permalink.""
+      );
+    }else{
+      $payload = array(
+        "group_guid" =>"".$group_guid."",
+        "domain"     =>"".$shorten_domain."",
+        "long_url"   =>"".$permalink.""
+      );
+    }
+
+
+    $json_payload = json_encode($payload);
+    
+    $headers      = get_wbitly_headers();
+
+
+    $response = wp_remote_post( WBITLY_API_URL . "/v4/shorten" , array(
+        'method'      => 'POST',
+        'headers'     => $headers,
+        'body'        => $json_payload
+        )
+    );
+
+
+    if ( is_wp_error( $response ) ) {
+      wbitly_write_log($response->get_error_message());
+      return false;
+    } else {
+      $response_array = json_decode($response['body']);
+      return $response_array->link ? $response_array->link : false;
+
+    }
+
+}
+
+
+
+
+
+
+/**
  * Generate and return URL or return false;
+ * Will be removed in future update
  *
  * @param      string   $shorten_url  The shorten url
  */
 
-function wbitly_shorten_url ($shorten_url) {
+function wbitly_shorten_url ($permalink) {
 
-  if ( ! class_exists( 'WbitlyURLSettings' ) ) {
-    return;
-  }
-
-  $shorten_url    =  apply_filters( 'wbitly_url_before_process', $shorten_url );
-  $bitly_url      =  new WbitlyURLSettings();
-  $access_token   =  $bitly_url->get_wbitly_access_token();
-  $group_guid     =  $bitly_url->get_wbitly_guid();
-  $shorten_domain =  $bitly_url->get_wbitly_domain();
+  _deprecated_function( 'wbitly_shorten_url', '1.0.1', 'wbitly_generate_shorten_url' );
 
 
-
-  if(!$shorten_domain){
-     $payload = array(
-      "group_guid" =>"".$group_guid."",
-      "long_url"   =>"".$shorten_url.""
-    );
-  }else{
-    $payload = array(
-      "group_guid" =>"".$group_guid."",
-      "domain"     =>"".$shorten_domain."",
-      "long_url"   =>"".$shorten_url.""
-    );
-  }
-
-
-  $json_payload = json_encode($payload);
-
-  $headers = array (
-      "Host"          => "api-ssl.bitly.com",
-      "Authorization" => "Bearer ".$access_token ,
-      "Content-Type"  => "application/json"
-  );
-
-
-  $response = wp_remote_post( WBITLY_API_URL . "/v4/shorten" , array(
-      'method'      => 'POST',
-      'timeout'     => 0,
-      'headers'     => $headers,
-      'body'        => $json_payload
-      )
-  );
-
-
-  if ( is_wp_error( $response ) ) {
-    return false;
-  } else {
-    $response_array = json_decode($response['body']);
-    return $response_array->link ? $response_array->link : false;
-
-  }
+  return wbitly_generate_shorten_url($permalink);
 
 }
 
@@ -96,9 +114,18 @@ add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
      return;
     }
 
-    $bitly_url    = new WbitlyURLSettings();
-    $access_token =  $bitly_url->get_wbitly_access_token();
-    $guid         =  $bitly_url->get_wbitly_guid();
+
+    if( 'publish' != get_post_status($post_id)){
+        return;
+    }
+
+
+
+
+    global $wbitly_settings;
+
+    $access_token =  $wbitly_settings->get_wbitly_access_token();
+    $guid         =  $wbitly_settings->get_wbitly_guid();
 
     if(!$access_token || !$guid){
 
@@ -108,21 +135,40 @@ add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
             </a>';
     }else{
 
-      $bitly_url = get_post_meta($post_id, '_wbitly_shorturl', true);
+      echo '<div class="wbitly_column_container">';
+
+      $bitly_url = get_wbitly_short_url($post_id);
       if ($bitly_url) {
         ?>
-          <div class="copy_bitly_tooltip">
-            <p><?php echo $bitly_url; ?></p>
-            <button  class="copy_bitly">
-              <span class="copy_bitly_tooltiptext">Click to Copy</span>
-              Copy URL
-            </button>
+          <div class="wbitly_tooltip wbitly copy_bitly">
+            <p><span class="copy_bitly_link"><?php echo $bitly_url; ?></span>  <span class="wbitly_tooltiptext">Click to Copy</span></p>
           </div>
+          <?php 
+
+          $wbitly_socal_share_status =  $wbitly_settings->get_wbitly_socal_share_status();
+
+          if( $wbitly_socal_share_status){
+            wbitly_get_template('share.php');
+          }
+
+          ?>
         <?php
         
       } else {
-        echo 'Not Generated yet';
+        ?>
+          <div class="wbitly_tooltip">
+            <p><?php echo $bitly_url; ?></p>
+            <button  class="wbitly generate_bitly" data-post_id="<?php echo $post_id;?>">
+              <span class="wbitly_tooltiptext">Click to Generate</span>
+             Generate URL
+            </button>
+          </div>
+
+
+        <?php
       }
+
+      echo "</div>";
 
     }
 
@@ -142,15 +188,14 @@ function wbitly_update_shorturl($new_status, $old_status, $post) {
     if('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
       
       $post_id     = $post->ID;
-      $shorten_url = get_post_meta($post_id, '_wbitly_shorturl', true);
+      $shorten_url = get_wbitly_short_url($post_id);
 
       if( empty( $shorten_url ) && ! wp_is_post_revision( $post_id ) ) {
         $permalink   = get_permalink($post_id);
-        $shorten_url = wbitly_shorten_url($permalink);
+        $shorten_url = wbitly_generate_shorten_url($permalink);
         
         if($shorten_url){
-          update_post_meta($post_id, '_wbitly_shorturl', $shorten_url);
-          do_action('wbitly_shorturl_updated' , $shorten_url);
+          save_wbitly_short_url($shorten_url , $post_id);
         }
         
       }
