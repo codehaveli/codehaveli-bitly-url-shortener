@@ -86,7 +86,7 @@ function wbitly_get_template( $template_name, $template_path = '', $default_path
     $located = wbitly_locate_template( $template_name, $template_path, $default_path );
 
     if ( ! file_exists( $located ) ) {
-        _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', esc_html( $located ) ), '1.0.1' );
+        _doing_it_wrong( __FUNCTION__, sprintf( '<code>%s</code> does not exist.', esc_html( $located ) ), WBITLY_PLUGIN_VERSION );
         return;
     }
 

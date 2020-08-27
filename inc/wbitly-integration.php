@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-06-29 20:03:48
+ * @Last Modified time: 2020-06-30 19:03:04
  */
 
 
@@ -83,7 +83,7 @@ function wbitly_generate_shorten_url($permalink){
 
 function wbitly_shorten_url ($permalink) {
 
-  _deprecated_function( 'wbitly_shorten_url', '1.0.1', 'wbitly_generate_shorten_url' );
+  _deprecated_function( 'wbitly_shorten_url', '1.1', 'wbitly_generate_shorten_url' );
 
 
   return wbitly_generate_shorten_url($permalink);

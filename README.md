@@ -1,30 +1,22 @@
-
 <p align="center">
   <img src="sc/banner-1544x500.png?raw=true">
 </p>
 
-# Codehaveli Bitly URL Shortener 
+# Codehaveli Bitly URL Shortener
 
 ### Description
 
-[Codehaveli Bitly URL Shortener](https://wordpress.org/plugins/codehaveli-bitly-url-shortener/) allow you to connect your WordPress Website to the https://bitly.com/ account via access code.
+[Codehaveli Bitly URL Shortener](https://wordpress.org/plugins/codehaveli-bitly-url-shortener/) uses the functionality of Bitly API to generate the short link automatically from your WordPress dashboard.
 
-This Plugin enables Bitly User to generate short link automatically from Wordpress when they publish new post. 
+Codehaveli Bitly URL Shortener allows you to connect your WordPress Website to the Bitly API via access code.
 
-This plugin use the functionality of **Bitly API** and generate short link and also get your group Guid from your Bitly account [During Your Settings ].
-
-
-
-
-### Terms of Use 
+### Terms of Use
 
 This is not a Official plugin of [Bitly](https://bitly.com)
 
 This plugin only connect your [https://bitly.com](https://bitly.com) account to WordPress.
 
 Please read [privacy](https://bitly.com/pages/privacy) and [terms of service](https://bitly.com/pages/terms-of-service) of [Bitly](https://bitly.com) before using this plugin.
-
-
 
 ### Bug reports
 
@@ -34,9 +26,7 @@ Bug reports for Codehaveli Bitly URL Shortener are welcomed in our Codehaveli Bi
 
 For more info on Bitly and Codehaveli , check out the following:
 
-* [Codehaveli](https://bit.ly/2A8QyGt) official homepage.
-* Bitly Access Token Generate Process from [Codehaveli Blog](https://bit.ly/2X1Hvjz)
-* Bitly [API Documentation](https://bitly.is/2XxT9BN) 
-* Follow Codehaveli on [Facebook](https://www.facebook.com/codehaveli), [Instagram](https://www.instagram.com/codehaveli/) & [Twitter](https://twitter.com/codehaveli).
-
-
+- [Codehaveli](https://www.codehaveli.com/) official homepage.
+- Read "How to generate Bitly OAuth access token" from [Codehaveli Blog](https://bit.ly/2X1Hvjz)
+- Bitly [API Documentation](https://bitly.is/2XxT9BN)
+- Follow Codehaveli on [Facebook](https://www.facebook.com/codehaveli), [Instagram](https://www.instagram.com/codehaveli/) & [Twitter](https://twitter.com/codehaveli).

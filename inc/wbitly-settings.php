@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-06-29 19:32:16
+ * @Last Modified time: 2020-08-20 09:27:42
  */
 
 
@@ -148,14 +148,14 @@ class WbitlyURLSettings {
 
 				$error     = $http_response->get_error_message();
 				$pluginlog = plugin_dir_path(__FILE__).'error.log';
-				$message   = $error .WBITLY_PLUGIN_VERSION .PHP_EOL;
+				$message   = $error . PHP_EOL;
 				error_log($message, 3, $pluginlog);
              }
 
 		} catch (Exception $e) {
 
 			$pluginlog = plugin_dir_path(__FILE__).'debug.log';
-			$message   = 'Unable to get Bitly GUID  This message was added in version '.WBITLY_PLUGIN_VERSION .PHP_EOL;
+			$message   = 'Unable to get Bitly GUID' . PHP_EOL;
 			error_log($message, 3, $pluginlog);
 		}
 
