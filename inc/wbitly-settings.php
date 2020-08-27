@@ -6,12 +6,13 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-08-20 09:27:42
+ * @Last Modified time: 2020-08-27 13:51:35
  */
 
 
 
 class WbitlyURLSettings {
+
 	private $bitly_url_options;
 
 	public function __construct() {
@@ -358,7 +359,7 @@ class WbitlyURLSettings {
 
 		$wbitly_social_share = '';
 				
-	    if($this->bitly_url_options['wbitly_socal_share']){
+	    if(isset($this->bitly_url_options['wbitly_socal_share'])){
 	    	$wbitly_social_share =  $this->bitly_url_options['wbitly_socal_share'] == "enable" ? "checked" : '';   	
 	    }
 
@@ -416,16 +417,13 @@ class WbitlyURLSettings {
 		return $wbitly_socal_share === "enable" ? true : false;
 	}
 
-
-
-
-
-
-
-
 }
-if ( is_admin() )
-	$wbitly_settings = new WbitlyURLSettings();
+
+
+
+ $wbitly_settings = new WbitlyURLSettings();
+
+
 
 
 

@@ -21,10 +21,6 @@ define( 'WBITLY_API_URL', 'https://api-ssl.bitly.com' );
 define( 'WBITLY_BASENAME', plugin_basename( __FILE__ ) );
 define( 'WBITLY_SETTINGS_URL', admin_url( 'tools.php?page=wbitly' ) );
 
-// https://raventools.com/marketing-reports/google-analytics/url-builder/?utm_source=Social%20Network&utm_medium=link&utm_campaign=Bitly&utm_term=Term&utm_content=Content
-
-
-
 
 /**
  * Load Admin Assets
@@ -64,3 +60,5 @@ require_once 'inc/wbitly-integration.php';
 
 
 require_once 'inc/wbitly-wp-functions.php';
+
+

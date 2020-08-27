@@ -1,6 +1,8 @@
 <?php
 
-   $bitly_url = get_wbitly_short_url($post_id);
+global $post_id;
+
+$bitly_url = get_wbitly_short_url($post_id);
 
 ?>
 

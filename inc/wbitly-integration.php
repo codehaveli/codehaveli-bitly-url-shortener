@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-06-30 19:03:04
+ * @Last Modified time: 2020-08-27 13:44:51
  */
 
 
@@ -22,7 +22,7 @@ function wbitly_generate_shorten_url($permalink){
    if ( ! class_exists( 'WbitlyURLSettings' ) ) {
       return;
     }
-     global $wbitly_settings;
+     $wbitly_settings = new WbitlyURLSettings();
 
      $permalink      =  apply_filters( 'wbitly_url_before_process', $permalink );
      $access_token   =  $wbitly_settings->get_wbitly_access_token();
@@ -122,7 +122,7 @@ add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
 
 
 
-    global $wbitly_settings;
+    $wbitly_settings = new WbitlyURLSettings();
 
     $access_token =  $wbitly_settings->get_wbitly_access_token();
     $guid         =  $wbitly_settings->get_wbitly_guid();

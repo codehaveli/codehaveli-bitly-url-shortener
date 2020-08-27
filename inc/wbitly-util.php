@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-06-29 17:26:28
+ * @Last Modified time: 2020-08-27 13:36:38
  */
 
 
@@ -50,8 +50,8 @@ function wbitly_remove_http($url) {
 
 function get_wbitly_headers(){
 
-	$bitly_settings      =  new WbitlyURLSettings();
-    $access_token   	 =  $bitly_settings->get_wbitly_access_token();
+	$wbitly_settings = new WbitlyURLSettings();
+    $access_token   	 =  $wbitly_settings->get_wbitly_access_token();
 
 	$headers = array (
         "Host"          => "api-ssl.bitly.com",
