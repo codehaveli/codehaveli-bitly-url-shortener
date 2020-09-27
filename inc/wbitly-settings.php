@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-08-27 13:51:35
+ * @Last Modified time: 2020-09-27 19:23:07
  */
 
 
@@ -19,34 +19,9 @@ class WbitlyURLSettings {
 		add_action( 'admin_menu', array( $this, 'wbitly_url_add_plugin_page' ) );
 		add_action( 'admin_init', array( $this, 'wbitly_url_page_init' ) );
 		add_action( 'init',       array( $this, 'wbitly_redirect_to_get_guid'));
-	    add_action( 'plugin_action_links_'.WBITLY_BASENAME, array( $this, 'wbitly_add_settings_url') );
 	    add_action( 'admin_notices', array($this , 'show_success_when_getting_guid') );
 	    add_action( 'admin_notices', array($this,  'show_error_when_getting_guid') );
 	}
-
-
-	/**
-	 * Add Settings URL
-	 *
-	 * @param      <type>  $links  The links
-	 *
-	 * @return     <type>  ( description_of_the_return_value )
-	 */
-
-	function wbitly_add_settings_url( $links ) {
-
-		$links = array_merge( array(
-			'<a href="' . esc_url( admin_url( 'tools.php?page=wbitly' ) ) . '">' . __( 'Settings', 'wbitly' ) . '</a>'
-		), $links );
-
-		return $links;
-
-	}
-
-
-
-
-
 
 	/**
 	 * Update GUID
@@ -290,6 +265,14 @@ class WbitlyURLSettings {
 			'wbitly_url_setting_section' // section
 		);
 
+		add_settings_field(
+			'wbitly_custom_post', // id
+			'Post Types', // title
+			array( $this, 'add_wbitly_custom_posttype_settings' ), // callback
+			'wbitly-url-admin', // page
+			'wbitly_url_setting_section' // section
+		);
+
 
 
 	}
@@ -320,6 +303,12 @@ class WbitlyURLSettings {
 		if ( isset( $input['wbitly_socal_share'] ) ) {
 			$sanitary_values['wbitly_socal_share'] = sanitize_text_field( $input['wbitly_socal_share'] );
 		}
+
+
+		if ( isset( $input['wbitly_custom_post'] ) ) {
+			$sanitary_values['wbitly_custom_post'] = $input['wbitly_custom_post'];
+		}
+
 
 		return $sanitary_values;
 	}
@@ -368,6 +357,28 @@ class WbitlyURLSettings {
 	}
 
 
+
+
+	public function add_wbitly_custom_posttype_settings(){
+
+		$post_types = get_post_types(array('public' => true));
+		$current_post_types = [];
+
+        $output = '<fieldset><legend class="screen-reader-text"><span>Post Types</span></legend>';
+
+
+        if(isset($this->bitly_url_options['wbitly_custom_post'])){
+	    	$current_post_types =  $this->bitly_url_options['wbitly_custom_post'];  	
+	    }
+
+        foreach ($post_types as $label) {
+            $output .= '<label for "' . $label . '>' . '<input type="checkbox" name="wbitly_url_option_name[wbitly_custom_post][]" value="' . $label . '" ' . checked(in_array($label, $current_post_types), true, false) . '>' . $label . '</label><br>';
+        }
+
+        echo $output;
+	}
+
+
 	/**
 	 * Return currently saved bitly access token
 	 *
@@ -409,7 +420,11 @@ class WbitlyURLSettings {
 		return $domain ? trim($domain) : "bit.ly";
 	}
 
-
+	/**
+	 * Gets the wbitly socal share status.
+	 *
+	 * @return     bool  The wbitly socal share status.
+	 */
 	public function get_wbitly_socal_share_status(){
 
 		$bitly_url_options_from_db = get_option( 'wbitly_url_option_name' ); 
@@ -417,11 +432,38 @@ class WbitlyURLSettings {
 		return $wbitly_socal_share === "enable" ? true : false;
 	}
 
+
+	public function get_wbitly_active_post_status(){
+
+
+		$bitly_url_options_from_db = get_option( 'wbitly_url_option_name' ); 
+		$active_post_types         = isset($bitly_url_options_from_db['wbitly_custom_post']) ? $bitly_url_options_from_db['wbitly_custom_post'] : [];
+		return $active_post_types;
+
+	}
+
+
+
+
+
 }
 
 
 
  $wbitly_settings = new WbitlyURLSettings();
+
+add_action( 'plugin_action_links_'.WBITLY_BASENAME, 'wbitly_add_settings_url' );
+
+function wbitly_add_settings_url( $links ) {
+
+		$links = array_merge( array(
+			'<a href="' . esc_url( admin_url( 'tools.php?page=wbitly' ) ) . '">' . __( 'Settings', 'wbitly' ) . '</a>'
+		), $links );
+
+		return $links;
+
+}
+
 
 
 

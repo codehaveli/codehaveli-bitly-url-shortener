@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-08-27 13:44:51
+ * @Last Modified time: 2020-09-27 19:25:49
  */
 
 
@@ -91,90 +91,106 @@ function wbitly_shorten_url ($permalink) {
 }
 
 
-
 /**
- * Add Short URL Column in Post List 
+ * Add Colum for custom post list
+ * 
  */
 
-add_filter('manage_post_posts_columns', function($columns) {
-  return array_merge($columns, ['wbitly_url' => __('Short URL', 'wbitly')]);
+add_action( 'admin_init', function(){
+
+
+   $wbitly_settings = new WbitlyURLSettings();
+   $active_post_types = $wbitly_settings->get_wbitly_active_post_status();
+
+
+   foreach ($active_post_types as $active_post) {
+     
+     /**
+     * Add Short URL Column in Post List 
+     */
+
+      $wbitly_column_key        = 'manage_'.$active_post.'_posts_columns';
+      $wbitly_column_value_key  = 'manage_'.$active_post.'_posts_custom_column';
+
+      add_filter($wbitly_column_key, function($columns) {
+        return array_merge($columns, ['wbitly_url' => __('Short URL', 'wbitly')]);
+      });
+
+
+      /**
+       * Display the value of bitly URL
+       * If Access token not added or Guid not added column will show settings link
+       * If Post Short URL is not generated "Not Generated yet" message will show
+       */
+       
+      add_action($wbitly_column_value_key, function($column_key, $post_id) {
+        if ($column_key == 'wbitly_url') {
+
+
+          if( 'publish' != get_post_status($post_id)){
+              return;
+          }
+
+          $wbitly_settings = new WbitlyURLSettings();
+          $access_token =  $wbitly_settings->get_wbitly_access_token();
+          $guid         =  $wbitly_settings->get_wbitly_guid();
+
+          if(!$access_token || !$guid){
+
+            $plugin_url = admin_url( 'tools.php?page=wbitly');
+            echo ' <a  class="wbitly_settings" href="'.$plugin_url .'">
+                  Setup Bitly URL
+                  </a>';
+          }else{
+
+            echo '<div class="wbitly_column_container">';
+
+            $bitly_url = get_wbitly_short_url($post_id);
+            if ($bitly_url) {
+              ?>
+                <div class="wbitly_tooltip wbitly copy_bitly">
+                  <p><span class="copy_bitly_link"><?php echo $bitly_url; ?></span>  <span class="wbitly_tooltiptext">Click to Copy</span></p>
+                </div>
+                <?php 
+
+                $wbitly_socal_share_status =  $wbitly_settings->get_wbitly_socal_share_status();
+
+                if( $wbitly_socal_share_status){
+                  wbitly_get_template('share.php');
+                }
+
+                ?>
+              <?php
+              
+            } else {
+              ?>
+                <div class="wbitly_tooltip">
+                  <p><?php echo $bitly_url; ?></p>
+                  <button  class="wbitly generate_bitly" data-post_id="<?php echo $post_id;?>">
+                    <span class="wbitly_tooltiptext">Click to Generate</span>
+                   Generate URL
+                  </button>
+                </div>
+
+
+              <?php
+            }
+
+            echo "</div>";
+
+          }
+
+
+        }
+      }, 10, 2);
+
+   }
+
+
+
 });
 
 
-/**
- * Display the value of bitly URL
- * If Access token not added or Guid not added column will show settings link
- * If Post Short URL is not generated "Not Generated yet" message will show
- */
- 
-add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
-  if ($column_key == 'wbitly_url') {
-
-    if ( ! class_exists( 'WbitlyURLSettings' ) ) {
-     return;
-    }
-
-
-    if( 'publish' != get_post_status($post_id)){
-        return;
-    }
-
-
-
-
-    $wbitly_settings = new WbitlyURLSettings();
-
-    $access_token =  $wbitly_settings->get_wbitly_access_token();
-    $guid         =  $wbitly_settings->get_wbitly_guid();
-
-    if(!$access_token || !$guid){
-
-      $plugin_url = admin_url( 'tools.php?page=wbitly');
-      echo ' <a  class="wbitly_settings" href="'.$plugin_url .'">
-            Setup Bitly URL
-            </a>';
-    }else{
-
-      echo '<div class="wbitly_column_container">';
-
-      $bitly_url = get_wbitly_short_url($post_id);
-      if ($bitly_url) {
-        ?>
-          <div class="wbitly_tooltip wbitly copy_bitly">
-            <p><span class="copy_bitly_link"><?php echo $bitly_url; ?></span>  <span class="wbitly_tooltiptext">Click to Copy</span></p>
-          </div>
-          <?php 
-
-          $wbitly_socal_share_status =  $wbitly_settings->get_wbitly_socal_share_status();
-
-          if( $wbitly_socal_share_status){
-            wbitly_get_template('share.php');
-          }
-
-          ?>
-        <?php
-        
-      } else {
-        ?>
-          <div class="wbitly_tooltip">
-            <p><?php echo $bitly_url; ?></p>
-            <button  class="wbitly generate_bitly" data-post_id="<?php echo $post_id;?>">
-              <span class="wbitly_tooltiptext">Click to Generate</span>
-             Generate URL
-            </button>
-          </div>
-
-
-        <?php
-      }
-
-      echo "</div>";
-
-    }
-
-
-  }
-}, 10, 2);
 
 
 /**
@@ -185,20 +201,30 @@ add_action('manage_post_posts_custom_column', function($column_key, $post_id) {
 add_action('transition_post_status', 'wbitly_update_shorturl' , 10 , 3 );
 function wbitly_update_shorturl($new_status, $old_status, $post) {
 
-    if('publish' === $new_status && 'publish' !== $old_status && $post->post_type === 'post') {
-      
-      $post_id     = $post->ID;
-      $shorten_url = get_wbitly_short_url($post_id);
 
-      if( empty( $shorten_url ) && ! wp_is_post_revision( $post_id ) ) {
-        $permalink   = get_permalink($post_id);
-        $shorten_url = wbitly_generate_shorten_url($permalink);
-        
-        if($shorten_url){
-          save_wbitly_short_url($shorten_url , $post_id);
-        }
-        
-      }
+
+
+    if('publish' === $new_status && 'publish' !== $old_status) {
+      
+      $wbitly_settings = new WbitlyURLSettings();
+      $active_post_types = $wbitly_settings->get_wbitly_active_post_status();
+
+      if(in_array($post->post_type, $active_post_types)){
+
+          $post_id     = $post->ID;
+          $shorten_url = get_wbitly_short_url($post_id);
+
+          if( empty( $shorten_url ) && ! wp_is_post_revision( $post_id ) ) {
+           
+            $permalink   = get_permalink($post_id);
+            $shorten_url = wbitly_generate_shorten_url($permalink);
+            
+            if($shorten_url){
+              save_wbitly_short_url($shorten_url , $post_id);
+            }
+            
+          }
+      }     
 
     }
 }
