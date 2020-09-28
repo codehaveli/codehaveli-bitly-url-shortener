@@ -6,7 +6,7 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-09-27 19:23:07
+ * @Last Modified time: 2020-09-28 10:35:31
  */
 
 
@@ -437,7 +437,7 @@ class WbitlyURLSettings {
 
 
 		$bitly_url_options_from_db = get_option( 'wbitly_url_option_name' ); 
-		$active_post_types         = isset($bitly_url_options_from_db['wbitly_custom_post']) ? $bitly_url_options_from_db['wbitly_custom_post'] : [];
+		$active_post_types         = isset($bitly_url_options_from_db['wbitly_custom_post']) ? $bitly_url_options_from_db['wbitly_custom_post'] : ['post'];
 		return $active_post_types;
 
 	}
