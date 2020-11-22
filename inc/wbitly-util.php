@@ -6,9 +6,12 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-08-27 13:36:38
+ * @Last Modified time: 2020-11-22 21:27:03
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
 
 function get_wbitly_short_url($post_id = null){
 

@@ -6,13 +6,18 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-06-29 19:57:26
+ * @Last Modified time: 2020-11-22 23:16:02
  */
 
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
+
 function wbitly_load_admin_script() {
-	wp_enqueue_script( 'wbitly-js', WBITLY_PLUGIN_URL . '/assets/js/wbitly.js', array( 'jquery' ), WBITLY_PLUGIN_VERSION , true );
-	wp_enqueue_style( 'wbitly-css', WBITLY_PLUGIN_URL . '/assets/css/wbitly.css',[], WBITLY_PLUGIN_VERSION , 'all' );
+	wp_enqueue_script( 'wbitly-js', WBITLY_PLUGIN_URL . 'assets/js/wbitly.js', array( 'jquery' ), WBITLY_PLUGIN_VERSION , true );
+	wp_enqueue_style( 'wbitly-css', WBITLY_PLUGIN_URL . 'assets/css/wbitly.css',[], WBITLY_PLUGIN_VERSION , 'all' );
 	wp_localize_script( 'wbitly-js', 'wbitlyJS' , ['ajaxurl' => admin_url( 'admin-ajax.php' )]);
 
 

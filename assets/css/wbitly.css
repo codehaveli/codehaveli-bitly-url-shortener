@@ -1,3 +1,10 @@
+.wbitly-mt-5{
+  margin-top: 25px;
+}
+.wbitly-meta-bg-link{
+  background: #eee;
+    padding: 5px 20px;
+}
 th.manage-column.column-wbitly_url {
     text-align: center;
 }

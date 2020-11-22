@@ -6,10 +6,12 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-06-29 20:09:58
+ * @Last Modified time: 2020-11-22 21:27:07
  */
 
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 
 add_action( 'wp_ajax_generate_wbitly_url_via_ajax', 'generate_wbitly_url_via_ajax');

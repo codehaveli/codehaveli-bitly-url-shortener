@@ -6,9 +6,12 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-09-27 19:25:49
+ * @Last Modified time: 2020-11-22 21:26:53
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+  exit; // Exit if accessed directly.
+}
 
 /**
  * Generate short URL from permalink
@@ -138,9 +141,7 @@ add_action( 'admin_init', function(){
           if(!$access_token || !$guid){
 
             $plugin_url = admin_url( 'tools.php?page=wbitly');
-            echo ' <a  class="wbitly_settings" href="'.$plugin_url .'">
-                  Setup Bitly URL
-                  </a>';
+            echo '<a  class="wbitly_settings" href="'.$plugin_url .'">Get Started</a>';
           }else{
 
             echo '<div class="wbitly_column_container">';

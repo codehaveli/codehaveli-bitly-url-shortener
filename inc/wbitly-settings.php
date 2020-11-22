@@ -6,10 +6,12 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-09-28 10:35:31
+ * @Last Modified time: 2020-11-22 23:06:50
  */
 
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 class WbitlyURLSettings {
 
@@ -322,6 +324,7 @@ class WbitlyURLSettings {
 			'<input class="regular-text" type="text" name="wbitly_url_option_name[access_token]" id="access_token" value="%s">',
 			isset( $this->bitly_url_options['access_token'] ) ? esc_attr( $this->bitly_url_options['access_token']) : ''
 		);
+		echo '<p> <small>Tutorial: </small><a href="https://www.codehaveli.com/how-to-generate-bitly-oauth-access-token/?utm_source=Wordpress%20Plugin&utm_medium=Tutorial%20Link&utm_campaign=Codehaveli%20Bitly%20URL%20Shortener" target="_blank"><small>How to generate Bitly OAuth access token?</small></a></p>';
 	}
 
 	public function group_guid_callback() {
@@ -333,7 +336,7 @@ class WbitlyURLSettings {
 			isset( $this->bitly_url_options['group_guid'] ) ? esc_attr( $this->bitly_url_options['group_guid']) : ''
 		);
 		echo "<a href=".$guid_url." class='button button-primary'>Get GUID</a>";
-		echo "<p> <small>First save the access token then click Get GUID button to fill Group Guid from your account automatically. </small></p>";
+		
 	}
 
 	public function bitly_domain_callback() {
@@ -353,7 +356,7 @@ class WbitlyURLSettings {
 	    }
 
 		printf('<label><input name="wbitly_url_option_name[wbitly_socal_share]"  id="wbitly_socal_share" type="checkbox" value="enable"  %s> Enable </label>', $wbitly_social_share);
-		echo '<p><small>If you enable this you can share the link from your post list</small></p>';
+		echo '<p><small>If you enable this you can share the link from your post list/edit screen.</small></p>';
 	}
 
 
