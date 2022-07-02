@@ -6,10 +6,12 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-06-29 20:09:58
+ * @Last Modified time: 2021-02-09 15:02:05
  */
 
-
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 
 add_action( 'wp_ajax_generate_wbitly_url_via_ajax', 'generate_wbitly_url_via_ajax');
@@ -22,9 +24,9 @@ function generate_wbitly_url_via_ajax(){
 		$error = true;
 	}
 
-	$post_id    = $data['post_id'];
+	$post_id    = (int)$data['post_id'];
 	
-	$permalink  = get_permalink( $post_id);
+	$permalink  = get_permalink( $post_id );
 	
 	$bilty_link = wbitly_generate_shorten_url($permalink);
 
@@ -52,4 +54,21 @@ function generate_wbitly_url_via_ajax(){
 	}
 
 	die();
+}
+
+
+/**
+ * Filter the core shortlink with Our generated Bitly Link
+ */
+
+add_filter( 'pre_get_shortlink', 'chnage_core_short_link_with_wbitly_link', 10, 5 );
+function chnage_core_short_link_with_wbitly_link($status, $id, $context, $allow_slugs ){
+	
+	
+	$bitly_url = get_wbitly_short_url($id);
+    if ($bitly_url) {
+    	return $bitly_url;
+    }
+
+    return $status;
 }

@@ -6,16 +6,23 @@
  * @Last Modified by:   Codehaveli
  * @Website: www.codehaveli.com
  * @Email: hello@codehaveli.com
- * @Last Modified time: 2020-08-27 13:36:38
+ * @Last Modified time: 2020-11-22 21:27:03
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit; // Exit if accessed directly.
+}
 
 function get_wbitly_short_url($post_id = null){
 
 	if(!$post_id){
 		global $post;
-		$post_id = $post->ID;
+		$post_id = isset($post->ID) ? $post->ID : 0;
 	}
+
+    if(!$post_id){
+        return false;
+    }
 
 	$wbitly_url = get_post_meta($post_id, '_wbitly_shorturl', true);
 
@@ -28,8 +35,12 @@ function get_wbitly_short_url($post_id = null){
 function save_wbitly_short_url($shorten_url , $post_id = null){
 	if(!$post_id){
 		global $post;
-		$post_id = $post->ID;
+		$post_id = isset($post->ID) ? $post->ID : 0;
 	}
+
+    if(!$post_id){
+        return false;
+    }
 
 	update_post_meta($post_id, '_wbitly_shorturl', $shorten_url);
     do_action('wbitly_shorturl_updated' , $shorten_url);

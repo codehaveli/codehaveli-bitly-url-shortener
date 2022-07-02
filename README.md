@@ -2,13 +2,13 @@
   <img src="sc/banner-1544x500.png?raw=true">
 </p>
 
-# Codehaveli Bitly URL Shortener
+#Bitly URL Shortener
 
 ### Description
 
-[Codehaveli Bitly URL Shortener](https://wordpress.org/plugins/codehaveli-bitly-url-shortener/) uses the functionality of Bitly API to generate the short link automatically from your WordPress dashboard.
+[Bitly URL Shortener](https://wordpress.org/plugins/codehaveli-bitly-url-shortener/) uses the functionality of Bitly API to generate the short link automatically from your WordPress dashboard.
 
-Codehaveli Bitly URL Shortener allows you to connect your WordPress Website to the Bitly API via access code.
+Bitly URL Shortener allows you to connect your WordPress Website to the Bitly API via access code.
 
 ### Terms of Use
 
@@ -20,7 +20,7 @@ Please read [privacy](https://bitly.com/pages/privacy) and [terms of service](ht
 
 ### Bug reports
 
-Bug reports for Codehaveli Bitly URL Shortener are welcomed in our Codehaveli Bitly URL Shortener [repository on GitHub](https://github.com/codehaveli/codehaveli-bitly-url-shortener). Please note that GitHub is not a support forum, and that issues that are not properly qualified as bugs will be closed.
+Bug reports for Bitly URL Shortener are welcomed in our Bitly URL Shortener [repository on GitHub](https://github.com/codehaveli/codehaveli-bitly-url-shortener). Please note that GitHub is not a support forum, and that issues that are not properly qualified as bugs will be closed.
 
 ### Further Reading
 
